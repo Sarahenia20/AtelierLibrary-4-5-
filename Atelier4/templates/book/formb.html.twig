@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add a Book{% endblock %}
+
+{% block body %}
+    <h1>Add a Book</h1>
+
+    <form method="post">
+        {{ form_start(form) }}
+
+        <div class="form-group">
+            {{ form_row(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Title'}}) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_row(form.publicationDate, {'attr': {'class': 'form-control', 'placeholder': 'Publication Date'}}) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_row(form.enabled, {'attr': {'class': 'form-check-input'}}) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_row(form.category, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        {# If you have an Author and Reader field, you can render them here as well #}
+        {# {{ form_row(form.Author) }} #}
+        {# {{ form_row(form.Reader) }} #}
+
+        <div class="form-group text-center">
+            {{ form_row(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+        </div>
+
+        {{ form_end(form) }}
+
+    </form>
+{% endblock %}

@@ -1,0 +1,43 @@
+{# templates/book/list.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Books List{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center mb-4">Books List</h1>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Publication Date</th>
+                    <th>Enabled</th>
+                    <th>Categories</th>
+                    <th>Author</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                    <tr>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.publicationDate|date("Y-m-d") }}</td>
+                        <td>{{ book.enabled ? 'Yes' : 'No' }}</td>
+                        <td>{{ book.category }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>
+                            <a href="{{ path('update', {'id': book.id}) }}" class="btn btn-primary">Edit</a>
+                            <a href="{{ path('remove', {'id': book.id}) }}" style="color: red;" class="btn btn-danger">Delete</a>
+                            <a href="{{ path('show_book', {'id': book.id}) }}" class="btn btn-info">Show</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center">No books found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

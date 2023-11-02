@@ -1,0 +1,22 @@
+{# templates/book/show.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Book Details{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center mb-4">Book Details</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <ul>
+                    <li><strong>Title:</strong> {{ book.title }}</li>
+                    <li><strong>Publication Date:</strong> {{ book.publicationDate|date("Y-m-d") }}</li>
+                    <li><strong>Enabled:</strong> {{ book.enabled ? 'Yes' : 'No' }}</li>
+                    <li><strong>Category:</strong> {{ book.category }}</li>
+                    <li><strong>Author:</strong> {{ book.author }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
