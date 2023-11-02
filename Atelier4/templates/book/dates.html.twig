@@ -1,0 +1,31 @@
+{# templates/book/dates.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Books Published Between Dates{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center mb-4">Books Published Between Dates</h1>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Publication Date</th>
+                    <th>Category</th>
+                    <th>Author</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                    <tr>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.publicationDate|date("Y-m-d") }}</td>
+                        <td>{{ book.category }}</td>
+                        <td>{{ book.author }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

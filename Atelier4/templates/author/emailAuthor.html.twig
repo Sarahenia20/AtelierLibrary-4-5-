@@ -1,0 +1,27 @@
+{# templates/author/list_author_by_email.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Authors by Email{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center mb-4">Authors Ordered by Email</h1>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for author in authors %}
+                    <tr>
+                        <td>{{ author.username }}</td>
+                        <td>{{ author.email }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

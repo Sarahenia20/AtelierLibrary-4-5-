@@ -88,4 +88,34 @@ class AuthorController extends AbstractController
  
      return $this ->redirectToRoute('fetch');
  }
+ #[Route('/list-author-by-email', name: 'list_author_by_email')]
+ public function listAuthorByEmail(AuthorRepository $authorRepository): Response
+ {
+     $authors = $authorRepository->listAuthorByEmail();
+
+     return $this->render('author/emailAuthor.twig', ['authors' => $authors]);
+ }
+ #[Route('/search-authors-by-book-count', name: 'search_authors_by_book_count')]
+    public function searchAuthorsByBookCount(AuthorRepository $authorRepository, Request $request): Response
+    {
+        $minBookCount = $request->query->get('minBookCount');
+        $maxBookCount = $request->query->get('maxBookCount');
+
+        $authors = $authorRepository->findAuthorsByBookCountRange($minBookCount, $maxBookCount);
+
+        return $this->render('author/list.html.twig', ['authors' => $authors]);
+    }
+    #[Route('/nobookrm', name: 'delete_authors_with_no_books')]
+    public function deleteAuthorsWithNoBooks(AuthorRepository $authorRepository, EntityManagerInterface $entityManager): Response
+    {
+        $authorsToDelete = $authorRepository->findAuthorsWithNoBooks();
+
+        foreach ($authorsToDelete as $author) {
+            $entityManager->remove($author);
+        }
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('/fetch');
+    }
 }

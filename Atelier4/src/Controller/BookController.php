@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Form\BookType;
 use App\Entity\Book;
 use App\Repository\BookRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -105,7 +106,41 @@ class BookController extends AbstractController
     {
         return $this->render('book/showb.html.twig', ['book' => $book]);
     }
+    #[Route('/search-book', name: 'search_book')]
+    public function searchBook(BookRepository $bookRepository, Request $request): Response
+    {
+        $ref = $request->query->get('ref');
+        $book = $bookRepository->searchBookByRef($ref);
 
+        return $this->render('book/list.html.twig', ['book' => $book]);
+    }
+    #[Route('/count-romance-books', name: 'count_romance_books')]
+    public function countRomanceBooks(EntityManagerInterface $entityManager): Response
+    {
+        $dql = "SELECT COUNT(b) FROM App\Entity\Book b WHERE b.category = 'Romance'";
+        $query = $entityManager->createQuery($dql);
+        $count = $query->getSingleScalarResult();
+
+        return $this->render('book/romance.html.twig', ['count' => $count]);
+    }
+    #[Route('/books-published-between-dates', name: 'books_published_between_dates')]
+    public function booksPublishedBetweenDates(EntityManagerInterface $entityManager): Response
+    {
+        $startDate = new \DateTime('2014-01-01');
+        $endDate = new \DateTime('2018-12-31');
+
+        $dql = "SELECT b FROM App\Entity\Book b 
+                WHERE b.publicationDate BETWEEN :start_date AND :end_date";
+        $query = $entityManager->createQuery($dql)
+            ->setParameters([
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+            ]);
+
+        $books = $query->getResult();
+
+        return $this->render('book/dates.html.twig', ['books' => $books]);
+    }
 }
 
 

@@ -20,6 +20,13 @@ class AuthorRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Author::class);
     }
+    public function listAuthorByEmail()
+    {
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.email', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return Author[] Returns an array of Author objects
@@ -45,4 +52,27 @@ class AuthorRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function findAuthorsByBookCountRange($minBookCount, $maxBookCount)
+{
+    $qb = $this->createQueryBuilder('a');
+    
+    if ($minBookCount !== null) {
+        $qb->andWhere('a.nb_books >= :minBookCount')
+            ->setParameter('minBookCount', $minBookCount);
+    }
+
+    if ($maxBookCount !== null) {
+        $qb->andWhere('a.nb_books <= :maxBookCount')
+            ->setParameter('maxBookCount', $maxBookCount);
+    }
+
+    return $qb->getQuery()->getResult();
+}
+public function findAuthorsWithNoBooks()
+{
+    return $this->createQueryBuilder('a')
+        ->where('a.nb_books = 0')
+        ->getQuery()
+        ->getResult();
+}
 }
